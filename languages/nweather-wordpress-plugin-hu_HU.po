@@ -1,0 +1,53 @@
+msgid "error"
+msgstr "hiba"
+
+msgid "no context parameter given"
+msgstr "hiányzó kontextus"
+
+msgid "temp-in"
+msgstr "Belső hőmérséklet"
+
+msgid "temp-out"
+msgstr "Külső hőmérséklet"
+
+msgid "hum-in"
+msgstr "Belső páratartalom"
+
+msgid "hum-out"
+msgstr "Külső páratartalom"
+
+msgid "pres"
+msgstr "Légnyomás"
+
+msgid "dewpoint"
+msgstr "Harmatpont"
+
+msgid "rain"
+msgstr "Eső"
+
+msgid "windspeed"
+msgstr "Szélsebesség"
+
+msgid "winddir"
+msgstr "Szélirány"
+
+msgid "°C"
+msgstr "°C"
+
+msgid "%"
+msgstr "%"
+
+msgid "hPa"
+msgstr "hPa"
+
+msgid "mm"
+msgstr "mm"
+
+msgid "degree"
+msgstr "fok"
+
+msgid "Time"
+msgstr "Idő"
+
+msgid "Value"
+msgstr "Érték"

@@ -1,0 +1,53 @@
+msgid "error"
+msgstr "error"
+
+msgid "no context parameter given"
+msgstr "no context parameter given"
+
+msgid "temp-in"
+msgstr "Temperature inside"
+
+msgid "temp-out"
+msgstr "Temperature outside"
+
+msgid "hum-in"
+msgstr "Humidity inside"
+
+msgid "hum-out"
+msgstr "Humidity outside"
+
+msgid "pres"
+msgstr "Air pressure"
+
+msgid "dewpoint"
+msgstr "Dewpoint"
+
+msgid "rain"
+msgstr "Rain"
+
+msgid "windspeed"
+msgstr "Wind speed"
+
+msgid "winddir"
+msgstr "Wind direction"
+
+msgid "°C"
+msgstr "°C"
+
+msgid "%"
+msgstr "%"
+
+msgid "hPa"
+msgstr "hPa"
+
+msgid "mm"
+msgstr "mm"
+
+msgid "degree"
+msgstr "degree"
+
+msgid "Time"
+msgstr "Idő"
+
+msgid "Value"
+msgstr "Value"
