@@ -10,11 +10,15 @@
 	margin-top: 35px;
 	margin-bottom: 20px;
 	font-weight: bold;
-	display: block;
 }
 
 .nweather-graph-title:first-of-type {
 	margin-top: 0;
+}
+
+.nweather-currvalue {
+	margin-left: 20px;
+	color: #888;
 }
 
 .nweather-graph-container.closed:last-of-type .nweather-graph-title {
@@ -53,6 +57,10 @@
 
 #nweather-navbar a {
 	margin-right: 8px;
+}
+
+#nweather-navbar a.selected {
+	color: white;
 }
 
 #nweather-navbar a:last-of-type {

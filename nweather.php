@@ -27,8 +27,15 @@ function nweather_createnavbar($context) {
 }
 
 function nweather_creategraph($context, $name, $label) {
+	global $wpdb;
+
 	$result = "<div id=\"nweather-graph-$name-container\" class=\"nweather-graph-container closed\">";
-	$result .= "	<a href=\"#\" onclick=\"nweather_togglegraph('$context', '$name', '" . __($label, 'nweather-wordpress-plugin') . "'); return false;\" class=\"nweather-graph-title\">" . __($name, 'nweather-wordpress-plugin') . ' <span class="nweather-graph-openclosearrow">▸</span></a>';
+	$result .= '	<div class="nweather-graph-title">';
+	$result .= "		<a href=\"#\" onclick=\"nweather_togglegraph('$context', '$name', '" . __($label, 'nweather-wordpress-plugin') . "'); return false;\">" . __($name, 'nweather-wordpress-plugin') . ' <span class="nweather-graph-openclosearrow">▸</span></a>';
+	$result .= '		<span class="nweather-currvalue">';
+	$result .= 				$wpdb->get_var("select `$name` from `nweather-" . $wpdb->escape($context) . '` order by `date` desc limit 1') . ' ' . __($label, 'nweather-wordpress-plugin');
+	$result .= '		</span>';
+	$result .= '	</div>';
 	$result .= '</div>';
 
 	return $result;
