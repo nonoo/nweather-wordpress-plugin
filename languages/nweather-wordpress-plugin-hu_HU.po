@@ -51,3 +51,27 @@ msgstr "Idő"
 
 msgid "Value"
 msgstr "Érték"
+
+msgid "day"
+msgstr "nap"
+
+msgid "days"
+msgstr "nap"
+
+msgid "week"
+msgstr "hét"
+
+msgid "weeks"
+msgstr "hét"
+
+msgid "month"
+msgstr "hónap"
+
+msgid "months"
+msgstr "hónap"
+
+msgid "year"
+msgstr "év"
+
+msgid "years"
+msgstr "év"

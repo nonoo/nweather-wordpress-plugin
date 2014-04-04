@@ -14,14 +14,21 @@ function nweather_geterrorstring($error) {
 }
 
 function nweather_createnavbar($context) {
-	$result = '';
+	$result = '<div id="nweather-navbar">';
+	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('3d'); return false;\">3 " . __('days', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('1w'); return false;\">1 " . __('week', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('1m'); return false;\">1 " . __('month', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('6m'); return false;\">6 " . __('months', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('1y'); return false;\">1 " . __('year', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('5y'); return false;\">5 " . __('years', 'nweather-wordpress-plugin') . '</a>';
+	$result .= '</div>';
 
 	return $result;
 }
 
 function nweather_creategraph($context, $name, $label) {
 	$result = "<div id=\"nweather-graph-$name-container\" class=\"nweather-graph-container closed\">";
-	$result .= "	<a href=\"#\" onclick=\"nweather_togglegraph('$context', '$name', '" . __($label, 'nweather-wordpress-plugin') . "', '6m');\" class=\"nweather-graph-title\">" . __($name, 'nweather-wordpress-plugin') . ' <span class="nweather-graph-openclosearrow">▸</span></a>';
+	$result .= "	<a href=\"#\" onclick=\"nweather_togglegraph('$context', '$name', '" . __($label, 'nweather-wordpress-plugin') . "'); return false;\" class=\"nweather-graph-title\">" . __($name, 'nweather-wordpress-plugin') . ' <span class="nweather-graph-openclosearrow">▸</span></a>';
 	$result .= '</div>';
 
 	return $result;
@@ -83,6 +90,7 @@ function nweather_jscss() {
 	echo '	var nweather_plugin_url = "' . plugins_url('', __FILE__) . '/";';
 	echo '	var nweather_plugin_timelabel = "' . __('Time', 'nweather-wordpress-plugin') . '";';
 	echo '	var nweather_plugin_valuelabel = "' . __('Value', 'nweather-wordpress-plugin') . '";';
+	echo '	var nweather_plugin_interval = "3d";';
 	echo '</script>';
 }
 add_action('wp_head', 'nweather_jscss');
