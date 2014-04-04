@@ -15,12 +15,12 @@ function nweather_geterrorstring($error) {
 
 function nweather_createnavbar($context) {
 	$result = '<div id="nweather-navbar">';
-	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('3d'); return false;\">3 " . __('days', 'nweather-wordpress-plugin') . '</a>';
-	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('1w'); return false;\">1 " . __('week', 'nweather-wordpress-plugin') . '</a>';
-	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('1m'); return false;\">1 " . __('month', 'nweather-wordpress-plugin') . '</a>';
-	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('6m'); return false;\">6 " . __('months', 'nweather-wordpress-plugin') . '</a>';
-	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('1y'); return false;\">1 " . __('year', 'nweather-wordpress-plugin') . '</a>';
-	$result .= "<a href=\"#\" onclick=\"nweather_updateinterval('5y'); return false;\">5 " . __('years', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" id=\"nweather-navbar-3d\" onclick=\"nweather_updateinterval('$context', '3d'); return false;\">3 " . __('days', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" id=\"nweather-navbar-1w\" onclick=\"nweather_updateinterval('$context', '1w'); return false;\">1 " . __('week', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" id=\"nweather-navbar-1m\" onclick=\"nweather_updateinterval('$context', '1m'); return false;\">1 " . __('month', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" id=\"nweather-navbar-6m\" onclick=\"nweather_updateinterval('$context', '6m'); return false;\">6 " . __('months', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" id=\"nweather-navbar-1y\" onclick=\"nweather_updateinterval('$context', '1y'); return false;\">1 " . __('year', 'nweather-wordpress-plugin') . '</a>';
+	$result .= "<a href=\"#\" id=\"nweather-navbar-5y\" onclick=\"nweather_updateinterval('$context', '5y'); return false;\">5 " . __('years', 'nweather-wordpress-plugin') . '</a>';
 	$result .= '</div>';
 
 	return $result;
@@ -50,6 +50,8 @@ function nweather_generate($context) {
 	$out .= nweather_creategraph($context, 'rain', 'mm');
 	$out .= nweather_creategraph($context, 'windspeed', 'km/h');
 	$out .= nweather_creategraph($context, 'winddir', 'degree');
+
+	$out .= "<script type=\"text/javascript\">nweather_updateinterval('$context');</script>";
 
 	return $out;
 }
@@ -90,7 +92,6 @@ function nweather_jscss() {
 	echo '	var nweather_plugin_url = "' . plugins_url('', __FILE__) . '/";';
 	echo '	var nweather_plugin_timelabel = "' . __('Time', 'nweather-wordpress-plugin') . '";';
 	echo '	var nweather_plugin_valuelabel = "' . __('Value', 'nweather-wordpress-plugin') . '";';
-	echo '	var nweather_plugin_interval = "3d";';
 	echo '</script>';
 }
 add_action('wp_head', 'nweather_jscss');

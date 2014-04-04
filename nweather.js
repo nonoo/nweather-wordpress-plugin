@@ -1,6 +1,21 @@
 var nweather_plugin_dygraphs = new Array();
+var nweather_plugin_interval;
 
-function nweather_opengraph(context, name, label, interval) {
+function nweather_getcookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1)
+                c_end = document.cookie.length;
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return "";
+}
+
+function nweather_opengraph(context, name, label) {
 	$('#nweather-graph-' + name + '-container .nweather-graph-openclosearrow').html('▾');
 	$('#nweather-graph-' + name + '-container')
 		.append($('<div id="nweather-graph-' + name + '-loading" class="nweather-graph-loading"></div>')
@@ -56,7 +71,24 @@ function nweather_togglegraph(context, name, label) {
 	}
 }
 
-function nweather_updateinterval(interval) {
+function nweather_updateinterval(context, interval) {
+	if (interval === undefined)
+		interval = nweather_getcookie('nweather-' + context + '-interval');
+
+	if (interval == '' || interval === undefined || interval == 'undefined')
+		interval = '3d';
+
+	nweather_plugin_interval = interval;
+
+	$('#nweather-navbar a').removeClass('selected');
+	$('#nweather-navbar-' + interval).addClass('selected');
+
+	// 30 days expiry.
+	var date = new Date();
+	date.setTime(date.getTime()+(30*24*60*60*1000));
+	var expires = "; expires=" + date.toGMTString();
+	document.cookie = 'nweather-' + context + '-interval=' + interval + expires + "; path=/";
+
 	for (entry in nweather_plugin_dygraphs) {
 		if (nweather_plugin_dygraphs.hasOwnProperty(entry)) {
 			var options = new Array();
