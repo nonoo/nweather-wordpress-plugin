@@ -1,7 +1,7 @@
 nweather-wordpress-plugin
 =========================
 
-Wordpress plugin which shows graphs from data uploaded by nweather-upload.
+Wordpress plugin which shows graphs from data uploaded by [nweather-upload](https://github.com/nonoo/nweather-upload).
 
 Usage
 -----
