@@ -20,28 +20,9 @@ function nweather_createnavbar($context) {
 }
 
 function nweather_creategraph($context, $name, $label) {
-	$result = '<div class="nweather-graph-title">' . __($name, 'nweather-wordpress-plugin') . '</div>';
-	$result .= "<div id=\"nweather-graph-$name-loading\" class=\"nweather-graph-loading\"><img src=\"" . plugins_url('images/ajax-loader.gif', __FILE__) . '" /></div>';
-	$result .= "<div id=\"nweather-graph-$name\" class=\"nweather-graph\"></div>";
-	$result .= '<script type="text/javascript">';
-	$jsname = preg_replace('/[^a-zA-Z0-9]+/', '', $name); // Replacing non-alnum chars
-	$result .= "	var dycolors = new Array();";
-	$result .= "	dycolors[0] = '#7abf34';";
-	$result .= "	var dylabels = new Array();";
-	$result .= "	dylabels[0] = '" . __('Time', 'nweather-wordpress-plugin') . "';";
-	$result .= "	dylabels[1] = '" . __('Value', 'nweather-wordpress-plugin') . "';";
-	$result .= "	var nweathergraph_$jsname = new Dygraph(";
-	$result .= "		document.getElementById('nweather-graph-$name'),";
-	$result .= "		'" . plugins_url('getcsv.php', __FILE__) . "?c=$context&d=$name&i=6m',";
-	$result .= "		{";
-	$result .= "			ylabel: '" . __($label, 'nweather-wordpress-plugin') . "',";
-	$result .= "			labels: dylabels,";
-	$result .= "			colors: dycolors,";
-	$result .= "			connectSeparatedPoints: true,";
-	$result .= "			showRangeSelector: true,";
-	$result .= "			drawCallback: function() { document.getElementById('nweather-graph-$name-loading').style.display = 'none'; }";
-	$result .= "		});";
-	$result .= "</script>";
+	$result = "<div id=\"nweather-graph-$name-container\" class=\"nweather-graph-container closed\">";
+	$result .= "	<a href=\"#\" onclick=\"nweather_togglegraph('$context', '$name', '" . __($label, 'nweather-wordpress-plugin') . "', '6m');\" class=\"nweather-graph-title\">" . __($name, 'nweather-wordpress-plugin') . ' <span class="nweather-graph-openclosearrow">▸</span></a>';
+	$result .= '</div>';
 
 	return $result;
 }
@@ -55,13 +36,13 @@ function nweather_generate($context) {
 	$out = nweather_createnavbar($context);
 	$out .= nweather_creategraph($context, 'temp-in', '°C');
 	$out .= nweather_creategraph($context, 'temp-out', '°C');
-/*	$out .= nweather_creategraph($context, 'hum-in', '%');
+	$out .= nweather_creategraph($context, 'hum-in', '%');
 	$out .= nweather_creategraph($context, 'hum-out', '%');
 	$out .= nweather_creategraph($context, 'pres', 'hPa');
 	$out .= nweather_creategraph($context, 'dewpoint', '°C');
 	$out .= nweather_creategraph($context, 'rain', 'mm');
 	$out .= nweather_creategraph($context, 'windspeed', 'km/h');
-	$out .= nweather_creategraph($context, 'winddir', 'degree');*/
+	$out .= nweather_creategraph($context, 'winddir', 'degree');
 
 	return $out;
 }
@@ -98,6 +79,11 @@ function nweather_jscss() {
 	echo '<link rel="stylesheet" type="text/css" media="screen" href="' . plugins_url('nweather.css', __FILE__) . '" />';
 	echo '<script type="text/javascript" src="' . plugins_url('nweather.js', __FILE__) . '"></script>';
 	echo '<script type="text/javascript" src="' . plugins_url('dygraph-combined.js', __FILE__) . '"></script>';
+	echo '<script type="text/javascript">';
+	echo '	var nweather_plugin_url = "' . plugins_url('', __FILE__) . '/";';
+	echo '	var nweather_plugin_timelabel = "' . __('Time', 'nweather-wordpress-plugin') . '";';
+	echo '	var nweather_plugin_valuelabel = "' . __('Value', 'nweather-wordpress-plugin') . '";';
+	echo '</script>';
 }
 add_action('wp_head', 'nweather_jscss');
 ?>

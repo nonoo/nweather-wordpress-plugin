@@ -80,7 +80,6 @@
 
 	$query = db_query('select `date`, `' . $_GET['d'] . '` from `nweather-' . $_GET['c'] . '` where unix_timestamp(`date`) > "' . $t . '" order by `date`');
 
-	echo "Time, Value\n";
 	while ($row = mysql_fetch_row($query)) {
 		$time = $row[0];
 		$value = $row[1];
