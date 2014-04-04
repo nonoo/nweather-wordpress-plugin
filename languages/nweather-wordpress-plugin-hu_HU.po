@@ -75,3 +75,6 @@ msgstr "év"
 
 msgid "years"
 msgstr "év"
+
+msgid "Last data uploaded at:"
+msgstr "Legutóbbi adat időpontja:"

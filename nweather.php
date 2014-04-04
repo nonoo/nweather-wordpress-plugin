@@ -9,12 +9,17 @@
  * License: MIT
 */
 
+include_once('common.inc.php');
+
 function nweather_geterrorstring($error) {
 	return '[nweather ' . __('error', 'nweather-wordpress-plugin') . ']' . $error . '[/nweather ' . __('error', 'nweather-wordpress-plugin') . ']';
 }
 
 function nweather_createnavbar($context) {
+	global $wpdb;
+
 	$result = '<div id="nweather-navbar">';
+	$result .= '<div id="nweather-lastdata">' . __('Last data uploaded at:', 'nweather-wordpress-plugin') . ' <span id="nweather-lastdatadate">' . $wpdb->get_var('select `date` from `nweather-' . $wpdb->escape($context) . '` order by `date` desc limit 1') . '</span></div>';
 	$result .= "<a href=\"#\" id=\"nweather-navbar-3d\" onclick=\"nweather_updateinterval('$context', '3d'); return false;\">3 " . __('days', 'nweather-wordpress-plugin') . '</a>';
 	$result .= "<a href=\"#\" id=\"nweather-navbar-1w\" onclick=\"nweather_updateinterval('$context', '1w'); return false;\">1 " . __('week', 'nweather-wordpress-plugin') . '</a>';
 	$result .= "<a href=\"#\" id=\"nweather-navbar-1m\" onclick=\"nweather_updateinterval('$context', '1m'); return false;\">1 " . __('month', 'nweather-wordpress-plugin') . '</a>';
@@ -33,7 +38,7 @@ function nweather_creategraph($context, $name, $label) {
 	$result .= '	<div class="nweather-graph-title">';
 	$result .= "		<a href=\"#\" onclick=\"nweather_togglegraph('$context', '$name', '" . __($label, 'nweather-wordpress-plugin') . "'); return false;\">" . __($name, 'nweather-wordpress-plugin') . ' <span class="nweather-graph-openclosearrow">▸</span></a>';
 	$result .= '		<span class="nweather-currvalue">';
-	$result .= 				$wpdb->get_var("select `$name` from `nweather-" . $wpdb->escape($context) . '` order by `date` desc limit 1') . ' ' . __($label, 'nweather-wordpress-plugin');
+	$result .= 				nweather_valueconvert($name, $wpdb->get_var("select `$name` from `nweather-" . $wpdb->escape($context) . '` order by `date` desc limit 1')) . ' ' . __($label, 'nweather-wordpress-plugin');
 	$result .= '		</span>';
 	$result .= '	</div>';
 	$result .= '</div>';
@@ -47,7 +52,8 @@ function nweather_generate($context) {
 	if (!$wpdb->get_results('show tables like "nweather-' . $wpdb->escape($context) . '"'))
 		return nweather_geterrorstring(__('no such context', 'nweather-wordpress-plugin'));
 
-	$out = nweather_createnavbar($context);
+	$out = "<div id=\"nweather-$context\" class=\"nweather\">";
+	$out .= nweather_createnavbar($context);
 	$out .= nweather_creategraph($context, 'temp-in', '°C');
 	$out .= nweather_creategraph($context, 'temp-out', '°C');
 	$out .= nweather_creategraph($context, 'hum-in', '%');
@@ -57,6 +63,7 @@ function nweather_generate($context) {
 	$out .= nweather_creategraph($context, 'rain', 'mm');
 	$out .= nweather_creategraph($context, 'windspeed', 'km/h');
 	$out .= nweather_creategraph($context, 'winddir', 'degree');
+	$out .= '</div>';
 
 	$out .= "<script type=\"text/javascript\">nweather_updateinterval('$context');</script>";
 
