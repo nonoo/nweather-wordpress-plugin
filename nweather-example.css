@@ -43,3 +43,18 @@
 .nweather-graph-openclosearrow {
 	padding-left: 5px;
 }
+
+#nweather-navbar {
+	float: right;
+	background-color: #111;
+	padding: 5px 10px 5px 10px;
+	border-radius: 5px;
+}
+
+#nweather-navbar a {
+	margin-right: 8px;
+}
+
+#nweather-navbar a:last-of-type {
+	margin-right: 0;
+}
