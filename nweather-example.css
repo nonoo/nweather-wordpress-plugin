@@ -59,6 +59,8 @@
 	border-radius: 5px;
 	text-align: right;
 	margin-top: -33px;
+	z-index: 5;
+	position: relative;
 }
 
 #nweather-navbar a {
