@@ -19,7 +19,8 @@ function nweather_createnavbar($context) {
 	global $wpdb;
 
 	$result = '<div id="nweather-navbar">';
-	$result .= '<div id="nweather-lastdata">' . __('Last data uploaded at:', 'nweather-wordpress-plugin') . ' <span id="nweather-lastdatadate">' . $wpdb->get_var('select `date` from `nweather-' . $wpdb->escape($context) . '` order by `date` desc limit 1') . '</span></div>';
+	$lastdatadate = $wpdb->get_var('select unix_timestamp(`date`) from `nweather-' . $wpdb->escape($context) . '` order by `date` desc limit 1') + get_option('gmt_offset') * 3600;
+	$result .= '<div id="nweather-lastdata">' . __('Last data uploaded at:', 'nweather-wordpress-plugin') . ' <span id="nweather-lastdatadate">' . date('Y-m-d H:i:s', $lastdatadate) .  '</span></div>';
 	$result .= "<a href=\"#\" id=\"nweather-navbar-3d\" onclick=\"nweather_updateinterval('$context', '3d'); return false;\">3 " . __('days', 'nweather-wordpress-plugin') . '</a>';
 	$result .= "<a href=\"#\" id=\"nweather-navbar-1w\" onclick=\"nweather_updateinterval('$context', '1w'); return false;\">1 " . __('week', 'nweather-wordpress-plugin') . '</a>';
 	$result .= "<a href=\"#\" id=\"nweather-navbar-1m\" onclick=\"nweather_updateinterval('$context', '1m'); return false;\">1 " . __('month', 'nweather-wordpress-plugin') . '</a>';

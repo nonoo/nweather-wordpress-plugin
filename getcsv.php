@@ -30,6 +30,14 @@
 	if (!$db)
 		die('error: database select error');
 
+	$query = db_query('select `option_value` from `wp_options` where `option_name`="gmt_offset"');
+	$row = mysql_fetch_row($query);
+	$gmtoffset = $row[0];
+	$timezone = date("H:i", $gmtoffset * 3600);
+	if ($gmtoffset > 0)
+		$timezone = '+' . $timezone;
+	mysql_query("set time_zone='$timezone'");
+
 	$query = db_query('show tables like "nweather-%"');
 
 	$contextok = false;
