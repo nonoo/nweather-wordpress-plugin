@@ -34,4 +34,14 @@
 		}
 		return $value;
 	}
+
+    function nweather_sendmail($from, $to, $subject, $msg, $headers = '') {
+		$header = "From: $from\nReply-To: $from\nMIME-Version: 1.0";
+		if (strstr($headers, 'Content-type:') == false)
+			$header .= "\nContent-type: text/plain; charset=UTF-8";
+		if ($headers)
+			$header .= "\n$headers";
+
+		mail($to, '=?UTF-8?B?' . base64_encode($subject) .'?=', $msg, $header);
+	}
 ?>

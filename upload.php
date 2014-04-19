@@ -4,6 +4,7 @@
 
 	include('../../../wp-config.php');
 	include_once('upload-config.inc.php');
+	include_once('common.inc.php');
 
 	function error_badrequest() {
 		die('400 Bad Request');
@@ -66,6 +67,25 @@
 	$db = mysql_select_db(DB_NAME, $conn);
 	if (!$db)
 		error_general();
+
+	$res = mysql_query('select unix_timestamp(`date`) from `nweather-' . $_GET['c'] .
+		'` where cast(`rain` as decimal(5,1)) != ' . $_POST['rain'] . ' order by date desc limit 1');
+	$row = mysql_fetch_array($res, MYSQL_NUM);
+	if ($row && isset($row[0])) {
+		$lastraindate = $row[0];
+
+		$res = mysql_query('select `rain` from `nweather-' . $_GET['c'] . '` order by date desc limit 1');
+		$row = mysql_fetch_array($res, MYSQL_NUM);
+		$latestrainvalue = $row[0];
+
+		if ($latestrainvalue != $_POST['rain'] && time()-$lastraindate > $rainalert_timeout[$_GET['c']]) {
+			foreach ($rainalert_mailto[$_GET['c']] as $mailto) {
+				nweather_sendmail($rainalert_mailfrom[$_GET['c']], $mailto,
+					$rainalert_mailsubject[$_GET['c']],	$rainalert_mailmsg[$_GET['c']] .
+					"\n\n--\nnweather\nhttps://github.com/nonoo/nweather-wordpress-plugin");
+			}
+		}
+	}
 
 	$res = mysql_query('replace into `nweather-' . $_GET['c'] . '` ' .
 		'(`date`, `temp-in`, `temp-out`, `hum-in`, `hum-out`, `pres`, `dewpoint`, `rain`, `windspeed`, `winddir`) values (
