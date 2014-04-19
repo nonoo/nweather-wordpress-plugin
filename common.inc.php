@@ -44,4 +44,17 @@
 
 		mail($to, '=?UTF-8?B?' . base64_encode($subject) .'?=', $msg, $header);
 	}
+
+	function nweather_checkvaliddata($dataname, $context, $currvalue, $maxdiff) {
+		global $nweather_dataintervalinsec;
+
+		$res = mysql_query("select `$dataname`, unix_timestamp(`date`) from `nweather-$context` order by date desc limit 1");
+		$row = mysql_fetch_array($res, MYSQL_NUM);
+		$latestvalue = $row[0];
+		$latestvaluedate = $row[1];
+
+		if (time()-$latestvaluedate < $nweather_dataintervalinsec[$context]+300 && abs($currvalue-$latestvalue) > $maxdiff)
+			return false;
+		return true;
+	}
 ?>

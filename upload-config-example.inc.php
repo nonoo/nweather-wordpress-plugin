@@ -1,4 +1,7 @@
 <?php
+	// Data upload interval (this value is needed for data validity checking)
+	$nweather_dataintervalinsec = array('context1name' => 900);
+
 	// These contexts and passwords should be specified to the upload script as
 	// HTTP GET parameters. Context names are the nweather SQL table names.
 	// Rename this example file to upload-config.inc.php.
