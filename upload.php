@@ -84,18 +84,25 @@
 
 	// Rain alert
 	if (isset($rainalert_mailto[$_GET['c']])) {
-		$res = mysql_query('select unix_timestamp(`date`) from `nweather-' . $_GET['c'] .
-			'` where cast(`rain` as decimal(5,1)) != ' . $_POST['rain'] . ' order by date desc limit 1');
-		$row = mysql_fetch_array($res, MYSQL_NUM);
-		mysql_free_result($res);
-		if ($row && isset($row[0])) {
-			$lastraindate = $row[0];
-
-			$res = mysql_query('select `rain` from `nweather-' . $_GET['c'] . '` order by date desc limit 1');
+		$res = mysql_query('select `rain` from `nweather-' . $_GET['c'] . '` order by `date` desc limit 1');
+		if ($res) {
 			$row = mysql_fetch_array($res, MYSQL_NUM);
-			$latestrainvalue = $row[0];
+			if ($row && isset($row[0]))
+				$latestrainvalue = $row[0];
 			mysql_free_result($res);
+		}
 
+		$res = mysql_query('select unix_timestamp(`date`) from `nweather-' . $_GET['c'] .
+			'` where cast(`rain` as decimal(5,1)) != ' . $latestrainvalue .
+			' order by `date` desc limit 1');
+		if ($res) {
+			$row = mysql_fetch_array($res, MYSQL_NUM);
+			if ($row && isset($row[0]))
+				$lastraindate = $row[0];
+			mysql_free_result($res);
+		}
+
+		if (isset($latestrainvalue) && isset($lastraindate)) {
 			if ($latestrainvalue != $_POST['rain'] && time()-$lastraindate > $rainalert_timeout[$_GET['c']]) {
 				foreach ($rainalert_mailto[$_GET['c']] as $mailto) {
 					nweather_sendmail($rainalert_mailfrom[$_GET['c']], $mailto,
