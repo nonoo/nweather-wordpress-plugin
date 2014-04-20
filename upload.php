@@ -130,8 +130,60 @@
 		mysql_close($conn);
     	error_general();
     }
-
 	mysql_free_result($res);
+
+	if ($aprs_server[$_GET['c']]) {
+		$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+		if ($socket) {
+			$result = socket_connect($socket, $aprs_server[$_GET['c']], $aprs_serverport[$_GET['c']]);
+			if ($result) {
+				// Authenticating
+				$tosend = 'user ' . $aprs_callsign[$_GET['c']] . ' pass ' . $aprs_passcode[$_GET['c']] . "\n";
+				socket_write($socket, $tosend, strlen($tosend));
+				$authstartat = time();
+				$authenticated = false;
+				while ($msgin = socket_read($socket, 50, PHP_NORMAL_READ)) {
+					if (strpos($msgin, $aprs_callsign[$_GET['c']] . ' verified') !== FALSE) {
+						$authenticated = true;
+						break;
+					}
+					// Timeout handling
+					if (time()-$authstartat > 5)
+						break;
+				}
+				if ($authenticated) {
+					$res = mysql_query('select `rain` from `nweather-' . $_GET['c'] . '` where unix_timestamp(`date`) < unix_timestamp()-3600 order by `date` desc limit 1');
+					if ($res) {
+						$row = mysql_fetch_array($res, MYSQL_NUM);
+						mysql_free_result($res);
+						if ($row && isset($row[0])) {
+							$rain1hourago = $row[0];
+							$raininlast1hour = $_POST['rain']-$rain1hourago;
+							if ($raininlast1hour < 0)
+								$raininlasthour = 0;
+							$tempfahrenheit = $_POST['temp-out']*(9/5)+32;
+							$humoutclamped = $_POST['hum-out'];
+							if ($humoutclamped > 99)
+								$humoutclamped = 99;
+							$windspeedkph = ($_POST['windspeed']/1000)*3600;
+							$windspeedmph = $windspeedkph/1.609344;
+
+							// See: http://aprs.org/APRS-docs/WX.TXT
+							//      http://homepage.ntlworld.com/wadei/aprs/APRSDEC%20demo%20output.txt
+							//      http://aprs.org/APRS-docs/PROTOCOL.TXT
+							$tosend = sprintf($aprs_callsign[$_GET['c']] . '>APRS,TCPIP*:@' . date('dHi') . 'z' . $aprs_coord[$_GET['c']] . '_' .
+								"%03d/%03dg...t%03dr%03dh%02db%05d " . $aprs_comment[$_GET['c']] . "\n",
+								nweather_winddir_convert($_POST['winddir']), $windspeedmph,
+								$tempfahrenheit, $raininlast1hour, $humoutclamped, $_POST['pres']*10);
+							socket_write($socket, $tosend, strlen($tosend));
+						}
+					}
+				}
+			}
+			socket_close($socket);
+		}
+	}
+
 	mysql_close($conn);
 
 	echo 'ok';

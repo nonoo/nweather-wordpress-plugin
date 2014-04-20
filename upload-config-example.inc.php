@@ -17,4 +17,15 @@
 	$rainalert_mailfrom = array('context1name' => 'nweather <nweather@email.com>');
 	$rainalert_mailsubject = array('context1name' => "[nweather] It's raining!");
 	$rainalert_mailmsg = array('context1name' => "It's raining!");
+
+	// If you want to upload weather data to the APRS-IS network,
+	// uncomment and set these parameters.
+	//$aprs_server = 'hun.aprs2.net';
+	//$aprs_serverport = 14580;
+	//$aprs_callsign = 'HA2KDR-4';
+	//$aprs_passcode = 0; // Generate this with an APRS passcode generator
+	//$aprs_altinfeet = 2080;
+	// Use GPS coordinate format, see http://www.csgnetwork.com/gpscoordconv.html
+	//$aprs_coord = '4740.55N/01829.60E';
+	//$aprs_comment = 'Gerecse WX - www.ha5kdr.hu';
 ?>
