@@ -61,7 +61,7 @@ function nweather_generate($context) {
 	$out .= nweather_creategraph($context, 'hum-out', '%');
 	$out .= nweather_creategraph($context, 'pres', 'hPa');
 	$out .= nweather_creategraph($context, 'dewpoint', '°C');
-	$out .= nweather_creategraph($context, 'rain', 'mm');
+	$out .= nweather_creategraph($context, 'rain', 'cm');
 	$out .= nweather_creategraph($context, 'windspeed', 'km/h');
 	$out .= nweather_creategraph($context, 'winddir', 'degree');
 	$out .= '</div>';
