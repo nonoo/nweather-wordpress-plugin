@@ -77,7 +77,7 @@
 		!nweather_checkvaliddata('pres', $_GET['c'], $_POST['pres'], 20) ||
 		!nweather_checkvaliddata('dewpoint', $_GET['c'], $_POST['dewpoint'], 20) ||
 		!nweather_checkvaliddata('rain', $_GET['c'], $_POST['rain'], 200) ||
-		!nweather_checkvaliddata('windspeed', $_GET['c'], $_POST['windspeed'], 200)) {
+		!nweather_checkvaliddata('windspeed', $_GET['c'], $_POST['windspeed'], 40)) { // 40*3.6=144 km/h difference
 			mysql_close($conn);
 			error_badrequest();
 	}

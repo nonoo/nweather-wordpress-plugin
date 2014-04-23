@@ -31,7 +31,7 @@
 	function nweather_valueconvert($dataname, $value) {
 		switch ($dataname) {
 			case 'winddir': $value = nweather_winddir_convert($value); break;
-			case 'windspeed': $value = ($value/1000)*3600;
+			case 'windspeed': $value = $value*3.6; // m/s to km/h
 		}
 		return $value;
 	}
