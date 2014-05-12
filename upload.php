@@ -93,7 +93,7 @@
 		}
 
 		$res = mysql_query('select unix_timestamp(`date`) from `nweather-' . $_GET['c'] .
-			'` where cast(`rain` as decimal(5,1)) != ' . $latestrainvalue .
+			'` where cast(`rain` as decimal(5,2)) != cast("' . $latestrainvalue . '" as decimal(5,2))' .
 			' order by `date` desc limit 1');
 		if ($res) {
 			$row = mysql_fetch_array($res, MYSQL_NUM);
