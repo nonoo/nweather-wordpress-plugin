@@ -14,4 +14,10 @@ this to a Wordpress page or post:
 <nweather context="gerecse" />
 ```
 
+If you want to modify the displayed data fields and their labels:
+
+```
+<nweather context="szentendre" datafields="temp-200cm temp-50cm temp-0cm hum pres windgust windspeed winddir rain10m" labels="°C °C °C % hPa km/h km/h degree min" />
+```
+
 You can see a working example [here](http://www.ha5kdr.hu/projektek/idojaras/gerecse).
