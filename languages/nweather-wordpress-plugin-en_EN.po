@@ -10,6 +10,18 @@ msgstr "Temperature inside"
 msgid "temp-out"
 msgstr "Temperature outside"
 
+msgid "temp-200cm"
+msgstr "Temperature at 2m"
+
+msgid "temp-50cm"
+msgstr "Temperature at 0.5m"
+
+msgid "temp-0"
+msgstr "Temperature at ground level"
+
+msgid "hum"
+msgstr "Humidity"
+
 msgid "hum-in"
 msgstr "Humidity inside"
 
@@ -25,8 +37,14 @@ msgstr "Dewpoint"
 msgid "rain"
 msgstr "Rain"
 
+msgid "rain10m"
+msgstr "Rain in the last 10 minutes"
+
 msgid "windspeed"
 msgstr "Wind speed"
+
+msgid "windgust"
+msgstr "Wind gust"
 
 msgid "winddir"
 msgstr "Wind direction"
@@ -45,6 +63,9 @@ msgstr "mm"
 
 msgid "degree"
 msgstr "degree"
+
+msgid "min"
+msgstr "minutes"
 
 msgid "Time"
 msgstr "Idő"

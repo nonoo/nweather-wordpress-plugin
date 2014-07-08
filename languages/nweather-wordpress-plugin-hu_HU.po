@@ -4,11 +4,23 @@ msgstr "hiba"
 msgid "no context parameter given"
 msgstr "hiányzó kontextus"
 
+msgid "temp-200cm"
+msgstr "Hőmérséklet 2 méteren"
+
+msgid "temp-50cm"
+msgstr "Hőmérséklet fél méteren"
+
+msgid "temp-0cm"
+msgstr "Hőmérséklet talajszinten"
+
 msgid "temp-in"
 msgstr "Belső hőmérséklet"
 
 msgid "temp-out"
 msgstr "Külső hőmérséklet"
+
+msgid "hum"
+msgstr "Páratartalom"
 
 msgid "hum-in"
 msgstr "Belső páratartalom"
@@ -25,8 +37,14 @@ msgstr "Harmatpont"
 msgid "rain"
 msgstr "Eső"
 
+msgid "rain10m"
+msgstr "Eső a legutóbbi 10 percben"
+
 msgid "windspeed"
 msgstr "Szélsebesség"
+
+msgid "windgust"
+msgstr "Széllökés"
 
 msgid "winddir"
 msgstr "Szélirány"
@@ -51,6 +69,9 @@ msgstr "Idő"
 
 msgid "Value"
 msgstr "Érték"
+
+msgid "min"
+msgstr "perc"
 
 msgid "day"
 msgstr "nap"

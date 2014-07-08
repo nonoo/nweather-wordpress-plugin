@@ -80,9 +80,11 @@ function nweather_filter($content) {
 		$endpos = strpos($content, '>', $startpos);
 		$block = substr($content, $startpos, $endpos - $startpos + 1);
 
+		// Extracting the context name from the attributes.
 		$contextstartpos = strpos($block, 'context="') + 9;
 		$context = trim(substr($block, $contextstartpos, strpos($block, '"', $contextstartpos) - $contextstartpos));
 
+		// Extracting data fields from the attributes.
 		$datafields = '';
 		$datafieldsstartpos = strpos($block, 'datafields="');
 		if ($datafieldsstartpos !== false) {
@@ -93,6 +95,7 @@ function nweather_filter($content) {
 		if ($datafields == '')
 			$datafields = 'temp-in temp-out hum-in hum-out pres dewpoint rain windspeed winddir';
 
+		// Extracting data field labels from the attributes.
 		$labels = '';
 		$labelsstartpos = strpos($block, 'labels="');
 		if ($labelsstartpos !== false) {
