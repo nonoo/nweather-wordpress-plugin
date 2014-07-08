@@ -54,7 +54,7 @@
 		$latestvalue = $row[0];
 		$latestvaluedate = $row[1];
 
-		if (time()-$latestvaluedate < $nweather_dataintervalinsec[$context]+300 && abs($currvalue-$latestvalue) > $maxdiff)
+		if (time()-$latestvaluedate < $nweather_dataintervalinsec[$context]+600 && abs($currvalue-$latestvalue) > $maxdiff)
 			return false;
 		return true;
 	}

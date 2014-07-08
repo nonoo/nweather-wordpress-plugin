@@ -35,6 +35,9 @@ function nweather_createnavbar($context) {
 function nweather_creategraph($context, $name, $label) {
 	global $wpdb;
 
+	if (!$wpdb->get_var('SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = "' . DB_NAME . '" AND TABLE_NAME = "nweather-' . $wpdb->escape($context) . '" AND COLUMN_NAME = "' . $name . '"'))
+		return;
+
 	$result = "<div id=\"nweather-graph-$name-container\" class=\"nweather-graph-container closed\">";
 	$result .= '	<div class="nweather-graph-title">';
 	$result .= "		<a href=\"#\" onclick=\"nweather_togglegraph('$context', '$name', '" . __($label, 'nweather-wordpress-plugin') . "'); return false;\">" . __($name, 'nweather-wordpress-plugin') . ' <span class="nweather-graph-openclosearrow">▸</span></a>';
@@ -47,7 +50,7 @@ function nweather_creategraph($context, $name, $label) {
 	return $result;
 }
 
-function nweather_generate($context) {
+function nweather_generate($context, $datafields, $labels) {
 	global $wpdb;
 
 	if (!$wpdb->get_results('show tables like "nweather-' . $wpdb->escape($context) . '"'))
@@ -55,15 +58,12 @@ function nweather_generate($context) {
 
 	$out = "<div id=\"nweather-$context\" class=\"nweather\">";
 	$out .= nweather_createnavbar($context);
-	$out .= nweather_creategraph($context, 'temp-in', '°C');
-	$out .= nweather_creategraph($context, 'temp-out', '°C');
-	$out .= nweather_creategraph($context, 'hum-in', '%');
-	$out .= nweather_creategraph($context, 'hum-out', '%');
-	$out .= nweather_creategraph($context, 'pres', 'hPa');
-	$out .= nweather_creategraph($context, 'dewpoint', '°C');
-	$out .= nweather_creategraph($context, 'rain', 'cm');
-	$out .= nweather_creategraph($context, 'windspeed', 'km/h');
-	$out .= nweather_creategraph($context, 'winddir', 'degree');
+
+	$datafields = explode(' ', $datafields);
+	$labels = explode(' ', $labels);
+	for ($i = 0; $i < count($datafields); $i++)
+		$out .= nweather_creategraph($context, $datafields[$i], $labels[$i]);
+
 	$out .= '</div>';
 
 	$out .= "<script type=\"text/javascript\">nweather_updateinterval('$context');</script>";
@@ -81,11 +81,31 @@ function nweather_filter($content) {
 		$block = substr($content, $startpos, $endpos - $startpos + 1);
 
 		$contextstartpos = strpos($block, 'context="') + 9;
-		$context = substr($block, $contextstartpos, strpos($block, '"', $contextstartpos) - $contextstartpos);
+		$context = trim(substr($block, $contextstartpos, strpos($block, '"', $contextstartpos) - $contextstartpos));
 
-		if ($context) {
-			$out = nweather_generate($context);
-		} else
+		$datafields = '';
+		$datafieldsstartpos = strpos($block, 'datafields="');
+		if ($datafieldsstartpos !== false) {
+			$datafieldsstartpos += 12;
+			$datafields = trim(substr($block, $datafieldsstartpos, strpos($block, '"', $datafieldsstartpos) - $datafieldsstartpos));
+		}
+
+		if ($datafields == '')
+			$datafields = 'temp-in temp-out hum-in hum-out pres dewpoint rain windspeed winddir';
+
+		$labels = '';
+		$labelsstartpos = strpos($block, 'labels="');
+		if ($labelsstartpos !== false) {
+			$labelsstartpos += 8;
+			$labels = trim(substr($block, $labelsstartpos, strpos($block, '"', $labelsstartpos) - $labelsstartpos));
+		}
+
+		if ($labels == '')
+			$labels = '°C °C % % hPa °C cm km/h degree';
+
+		if ($context)
+			$out = nweather_generate($context, $datafields, $labels);
+		else
 			$out = nweather_geterrorstring(__('no context parameter given', 'nweather-wordpress-plugin'));
 
 		$content = str_replace($block, $out, $content);
