@@ -84,7 +84,7 @@
 
 	// Rain alert
 	if (isset($rainalert_mailto[$_GET['c']])) {
-		$res = mysql_query('select `rain` from `nweather-' . $_GET['c'] . '` order by `date` desc limit 1');
+		$res = mysql_query('select `rain` from `nweather-' . mysql_real_escape_string($_GET['c']) . '` order by `date` desc limit 1');
 		if ($res) {
 			$row = mysql_fetch_array($res, MYSQL_NUM);
 			if ($row && isset($row[0]))
@@ -92,7 +92,7 @@
 			mysql_free_result($res);
 		}
 
-		$res = mysql_query('select unix_timestamp(`date`) from `nweather-' . $_GET['c'] .
+		$res = mysql_query('select unix_timestamp(`date`) from `nweather-' . mysql_real_escape_string($_GET['c']) .
 			'` where cast(`rain` as decimal(5,2)) != cast("' . $latestrainvalue . '" as decimal(5,2))' .
 			' order by `date` desc limit 1');
 		if ($res) {
@@ -113,7 +113,7 @@
 		}
 	}
 
-	$res = mysql_query('replace into `nweather-' . $_GET['c'] . '` ' .
+	$res = mysql_query('replace into `nweather-' . mysql_real_escape_string($_GET['c']) . '` ' .
 		'(`date`, `temp-in`, `temp-out`, `hum-in`, `hum-out`, `pres`, `dewpoint`, `rain`, `windspeed`, `winddir`) values (
 		"' . date("Y-m-d H:i:s" , $_POST['date']) . '" ,
 		"' . $_POST['temp-in'] . '" ,
@@ -152,14 +152,14 @@
 						break;
 				}
 				if ($authenticated) {
-					$res = mysql_query('select `rain` from `nweather-' . $_GET['c'] . '` where unix_timestamp(`date`) < unix_timestamp()-3600 order by `date` desc limit 1');
+					$res = mysql_query('select `rain` from `nweather-' . mysql_real_escape_string($_GET['c']) . '` where unix_timestamp(`date`) < unix_timestamp()-3600 order by `date` desc limit 1');
 					if ($res) {
 						$row = mysql_fetch_array($res, MYSQL_NUM);
 						mysql_free_result($res);
 						if ($row && isset($row[0]))
 							$rain1hourago = $row[0];
 					}
-					$res = mysql_query('select `rain` from `nweather-' . $_GET['c'] . '` where unix_timestamp(`date`) < unix_timestamp()-86400 order by `date` desc limit 1');
+					$res = mysql_query('select `rain` from `nweather-' . mysql_real_escape_string($_GET['c']) . '` where unix_timestamp(`date`) < unix_timestamp()-86400 order by `date` desc limit 1');
 					if ($res) {
 						$row = mysql_fetch_array($res, MYSQL_NUM);
 						mysql_free_result($res);
