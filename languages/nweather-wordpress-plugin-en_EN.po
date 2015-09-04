@@ -4,6 +4,9 @@ msgstr "error"
 msgid "no context parameter given"
 msgstr "no context parameter given"
 
+msgid "temp"
+msgstr "Temperature"
+
 msgid "temp-in"
 msgstr "Temperature inside"
 

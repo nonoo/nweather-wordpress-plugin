@@ -4,6 +4,9 @@ msgstr "hiba"
 msgid "no context parameter given"
 msgstr "hiányzó kontextus"
 
+msgid "temp"
+msgstr "Hőmérséklet"
+
 msgid "temp-200cm"
 msgstr "Hőmérséklet 2 méteren"
 

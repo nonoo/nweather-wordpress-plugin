@@ -49,6 +49,7 @@
 
 	function nweather_checkvaliddata($dataname, $context, $currvalue, $maxdiff) {
 		global $nweather_dataintervalinsec;
+
 		$context = mysql_real_escape_string($context);
 		$res = mysql_query("select `$dataname`, unix_timestamp(`date`) from `nweather-$context` order by date desc limit 1");
 		$row = mysql_fetch_array($res, MYSQL_NUM);
