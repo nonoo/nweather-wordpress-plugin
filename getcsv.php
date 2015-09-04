@@ -10,6 +10,7 @@
 	include_once('common.inc.php');
 
 	function db_query($query) {
+		$query = mysql_real_escape_string($query);
 		$result = mysql_query($query);
 		if (!$result)
 			die('error: database query error (' . $query . ')');
