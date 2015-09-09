@@ -9,15 +9,6 @@
 	include('../../../wp-config.php');
 	include_once('common.inc.php');
 
-	function db_query($query) {
-		$query = mysql_real_escape_string($query);
-		$result = mysql_query($query);
-		if (!$result)
-			die('error: database query error (' . $query . ')');
-
-		return $result;
-	}
-
 	if (!isset($_GET['c']) ||
 		!isset($_GET['i']) ||
 		!isset($_GET['d']))
@@ -31,7 +22,7 @@
 	if (!$db)
 		die('error: database select error');
 
-	$query = db_query('select `option_value` from `wp_options` where `option_name`="gmt_offset"');
+	$query = mysql_query('select `option_value` from `wp_options` where `option_name`="gmt_offset"');
 	$row = mysql_fetch_row($query);
 	$gmtoffset = $row[0];
 	$timezone = date("H:i", $gmtoffset * 3600);
@@ -39,7 +30,7 @@
 		$timezone = '+' . $timezone;
 	mysql_query("set time_zone='$timezone'");
 
-	$query = db_query('show tables like "nweather-%"');
+	$query = mysql_query('show tables like "nweather-%"');
 
 	$contextok = false;
 	while ($row = mysql_fetch_row($query)) {
@@ -50,7 +41,7 @@
 	if (!$contextok)
 		die('error: invalid context');
 
-	$query = db_query('show columns from `nweather-' . $_GET['c'] . '`');
+	$query = mysql_query('show columns from `nweather-' . mysql_real_escape_string($_GET['c']) . '`');
 
 	$dataok = false;
 	while ($row = mysql_fetch_row($query)) {
@@ -61,7 +52,7 @@
 	if (!$dataok)
 		die('error: invalid data');
 
-	$query = db_query('select unix_timestamp(max(`date`)) from `nweather-' . $_GET['c'] . '`');
+	$query = mysql_query('select unix_timestamp(max(`date`)) from `nweather-' . mysql_real_escape_string($_GET['c']) . '`');
 	$row = mysql_fetch_row($query);
 	$latestitemdate = $row[0];
 
@@ -88,7 +79,7 @@
 			die('error: invalid interval');
 	}
 
-	$query = db_query('select `date`, `' . $_GET['d'] . '` from `nweather-' . $_GET['c'] . '` where unix_timestamp(`date`) > "' . $t . '" order by `date`');
+	$query = mysql_query('select `date`, `' . mysql_real_escape_string($_GET['d']) . '` from `nweather-' . mysql_real_escape_string($_GET['c']) . '` where unix_timestamp(`date`) > "' . mysql_real_escape_string($t) . '" order by `date`');
 
 	while ($row = mysql_fetch_row($query)) {
 		$time = $row[0];
